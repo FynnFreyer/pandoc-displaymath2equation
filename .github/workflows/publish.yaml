@@ -76,11 +76,7 @@ jobs:
       # pretty hacky, but should be fine
       - name: Find project version
         id: find_version
-        run: >-
-          echo version=$(
-            ls dist/*.tar.gz
-            | sed -E 's/dist\/pandoc_displaymath2equation-(.+).tar.gz/\1/'
-          ) >> "$GITHUB_OUTPUT"
+        run: echo version=$(ls dist/*.tar.gz | sed -E 's/dist\/pandoc_displaymath2equation-(.+).tar.gz/\1/') >> "$GITHUB_OUTPUT"
 
       - name: Create release
         env:

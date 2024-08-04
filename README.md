@@ -1,11 +1,20 @@
 # pandoc-displaymath2equations
 
-Replace blocks of displaymath with the equation environment.
+Replace blocks of displaymath with the equation environment, and enable links to labeled equations.
 
 This is a **very** simple filter.
 For a solution with all the bells and whistles use the (now seemingly unmaintained) [pandoc-eqnos](https://github.com/tomduck/pandoc-eqnos).
 
-## Effect
+## Usage
+
+Install the `pandoc-displaymath2equation` package from [PyPI](https://pypi.org/project/pandoc-displaymath2equation/), and add `pandoc-displaymath2equation` to your filters.
+
+```
+python -m pip install pandoc-displaymath2equation
+pandoc --filter pandoc-displaymath2equation path/to/file.md -o file.pdf
+```
+
+### Display Math Conversion
 
 Content that would usually generate output like this:
 
@@ -23,9 +32,20 @@ will instead generate a block like this:
 \end{equation}
 ```
 
-## Usage
+### Referencing Labelled Equations
 
-Install the `pandoc-displaymath2equation` package from [PyPI](https://pypi.org/project/pandoc-displaymath2equation/), and add `pandoc-displaymath2equation` to your filters.
+To reference an equation labeled `id`, use a string of the form `(eq:id)`.
+This will be replaced with `\eqref{id}`.
+
+To label an equation, just use `\label{id}` in the display math block.
+
+```latex
+$$
+E = mc^2 \label{important}
+$$
+```
+
+This can be referenced in the text by using `(eq:important)`.
 
 ## Development
 
@@ -56,9 +76,5 @@ Once it does, it goes into `docs`.
 
 Possible future features that would be nice to have:
 
-- syntax for
-  - labeling (determining the label rendered next to the equation)
-  - identifying (giving a unique ID to an equation)
-  - reference an equation by its ID, such that its label is displayed
-  - link an equation by its ID
+- syntax for determining the text/mark/number rendered next to the equation
 - logic to deal with split/align environments

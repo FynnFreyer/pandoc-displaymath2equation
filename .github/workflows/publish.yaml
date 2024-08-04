@@ -85,12 +85,11 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          version: 'v${{ steps.find_version.outputs.version }}'
+          repo: '${{ github.repository }}'
         run: >-
           gh release create
           --generate-notes
-          '${{ version }}'
-          --repo '${{ repo }}'
+          --repo "${repo}"
+          "${version}"
           dist/**
-        with:
-          version: 'v${{ steps.find_version.outputs.version }}'
-          repo: '${{ github.repository }}'

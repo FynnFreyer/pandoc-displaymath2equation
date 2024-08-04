@@ -1,27 +1,25 @@
-from io import StringIO
+from functools import partial
 from pathlib import Path
 
-from displaymath2equation.main import main
+from panflute import RawBlock, RawInline
 
-from panflute import Doc, Element, RawBlock
-from panflute.io import load
+from util import process_file, report_occurences
 
 _THIS_DIR = Path(__file__).parent
 
-_result_contains_raw_block = False
-
-
-def mark_raw_blocks(elem: Element, doc: Doc | None = None) -> None:
-    if isinstance(elem, RawBlock):
-        global _result_contains_raw_block
-        _result_contains_raw_block = True
-
 
 def test_doc_contains_raw_block_after_filter():
-    with open(_THIS_DIR / "assets/test.json") as file, StringIO() as out:
-        main(input_stream=file, output_stream=out)
-        json_result = out.getvalue()
-    with StringIO(json_result) as result:
-        doc = load(result)
-    doc.walk(mark_raw_blocks, doc=doc)
-    assert _result_contains_raw_block
+    # TODO create doc fixture
+    doc = process_file(_THIS_DIR / "assets/test.md")
+    counter = {}
+    reporter = partial(report_occurences, klass=RawBlock, counter=counter)
+    doc.walk(reporter, doc=doc)
+    assert counter[RawBlock] == 2
+
+
+def test_doc_contains_raw_inline_after_filter():
+    doc = process_file(_THIS_DIR / "assets/test.md")
+    counter = {}
+    reporter = partial(report_occurences, klass=RawInline, counter=counter)
+    doc.walk(reporter, doc=doc)
+    assert counter[RawInline] == 2

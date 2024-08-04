@@ -20,6 +20,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    'hatch',
     'pip-tools',
     'pytest'
 ]

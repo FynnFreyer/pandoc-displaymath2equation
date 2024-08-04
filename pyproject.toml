@@ -4,14 +4,17 @@ description = 'Automatically number display-math equations in pandoc.'
 authors = [
     { name = 'Freyer, Fynn', email = 'fynn.freyer@googlemail.com' }
 ]
-version = '0.0.0.1.rc3'
+version = '0.0.0.1'
 readme = 'README.md'
 requires-python = '>=3.10'
 classifiers = [
     'Programming Language :: Python :: 3.10',
+    'Topic :: Text Processing',
+    'Topic :: Text Processing :: Filters',
+    'Topic :: Text Processing :: Markup',
+    'Topic :: Text Processing :: Markup :: LaTeX',
     'License :: OSI Approved :: MIT License',
-    'Operating System :: POSIX :: Linux',
-    'Development Status :: 2 - Pre-Alpha',
+    'Development Status :: 3 - Alpha',
 ]
 
 dependencies = [

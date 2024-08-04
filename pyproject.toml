@@ -18,6 +18,10 @@ dependencies = [
     'panflute',
 ]
 
+[project.urls]
+Homepage = "https://github.com/FynnFreyer/pandoc-displaymath2equation"
+Issues = "https://github.com/FynnFreyer/pandoc-displaymath2equation/issues"
+
 [project.optional-dependencies]
 dev = [
     'hatch',

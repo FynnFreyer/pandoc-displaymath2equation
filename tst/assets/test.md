@@ -1,5 +1,7 @@
 ---
 some: attribute
+displaymath2equation:
+  labeled-only: true
 ---
 
 # Test file
@@ -17,3 +19,9 @@ $$
 $$
 
 We see that (eq:false) is false.
+
+$$
+1 + 1 = 4
+$$
+
+Unlabeled equation.

@@ -45,7 +45,18 @@ E = mc^2 \label{important}
 $$
 ```
 
-This can be referenced in the text by using `(eq:important)`.
+With the default `eq-ref` option, this can be referenced in the text by using `(eq:important)`.
+
+### Options
+
+Options can be passed via document metadata.
+
+| Key            | Type   | Default                   | Effect                                                  |
+|----------------|--------|---------------------------|---------------------------------------------------------|
+| `labeled-only` | `bool` | `false`                   | Do not transform blocks without a `\label`.             |
+| `eq-ref`       | `str`  | `\(eq:(?P<eq_id>[^)]+)\)` | Regex to match equation references. Can't match spaces. |
+| `env-start`    | `str`  | `\begin{equation}`        | Environment opening statement.                          |
+| `env-stop`     | `str`  | `\end{equation}`          | Environment closing statement.                          |
 
 ## Development
 

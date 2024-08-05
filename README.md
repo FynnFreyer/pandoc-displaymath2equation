@@ -1,4 +1,4 @@
-# pandoc-displaymath2equations
+# pandoc-displaymath2equation
 
 Replace blocks of displaymath with the equation environment, and enable links to labeled equations.
 

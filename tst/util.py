@@ -1,14 +1,15 @@
 import sys
 import inspect
+
 from io import StringIO
 from pathlib import Path
-
 from pprint import pp
 from typing import Type
 
 from panflute import convert_text, Doc, Element, load
 
 from displaymath2equation.main import main
+from displaymath2equation.types_ import Walker
 
 
 def show(caller_location: str = "", die: bool = False):
@@ -26,21 +27,28 @@ def show(caller_location: str = "", die: bool = False):
         sys.exit(0)
 
 
-def report_occurences(elem: Element, doc: Doc | None = None, *, klass: Type, counter: dict[Type, int]) -> None:
+def report_occurences(klass: Type, counter: dict[Type, list]) -> Walker:
     """
-    Partial apply klass and counter. Then walk the document with the resulting reporter.
-    The passed counter will hold number of occurrences afterwards.
+    Generate a reporter function to walk the document and capture elements of type ``klass``.
+    The passed counter will hold a list of elements afterwards.
 
-    :param elem: An element in the document stream.
-    :param doc: Possibly the document.
     :param klass: A klass of which to count occurrences.
     :param counter: A dict that acts as a counter/memory.
     """
-    if isinstance(elem, klass):
-        if klass not in counter:
-            counter[klass] = 0
-        counter[klass] += 1
+    def reporter(elem: Element, doc: Doc | None = None) -> None:
+        """
+        Reporter function to walk the document tree.
 
+        :param elem: An element in the document stream.
+        :param doc: Possibly the document.
+        """
+
+        if isinstance(elem, klass):
+            if klass not in counter:
+                counter[klass] = []
+            counter[klass].append(elem)
+
+    return reporter
 
 def process_file(path: Path) -> Doc:
     """

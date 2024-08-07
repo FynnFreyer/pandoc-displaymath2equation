@@ -4,7 +4,6 @@ Number all equations in a document, when converting to latex.
 from panflute import run_filter, Element, Doc, Math, RawBlock, RawInline, Para, Str
 
 from displaymath2equation.config import Config
-from displaymath2equation.types_ import Walker
 
 
 def is_block_para(elem: Element) -> bool:
@@ -24,6 +23,7 @@ def replace_math(elem: Math, config: Config) -> RawBlock | None:
     If this math element is a display math block, we replace it with the equation environment.
 
     :param elem: A math block.
+    :param config: The tool :class:`~displaymath2equation.config.Config`.
     :return: A raw latex block with an equation environment, or ``None`` if elem is no display math block.
     """
 
@@ -38,12 +38,13 @@ def replace_math(elem: Math, config: Config) -> RawBlock | None:
         return eq
 
 
-def replace_eq_refs(config: Config) -> Walker:
+def replace_eq_refs(elem: Element, config: Config) -> Element:
     """
-    Generate a walker that replaces equation references.
+    Replace equation reference strings in an element and all its children with proper references.
 
-    :param config: The config object.
-    :return: A walker function.
+    :param elem: The elem in which to replace any equation reference strings.
+    :param config: The tool :class:`~displaymath2equation.config.Config`.
+    :return: The (possibly changed) element.
     """
 
     def replacer(elem: Element, doc: Doc | None = None) -> RawInline | None:
@@ -61,7 +62,8 @@ def replace_eq_refs(config: Config) -> Walker:
                 eq_ref = RawInline(rf"\eqref{{{eq_id}}}", format="latex")
                 return eq_ref
 
-    return replacer
+    elem.walk(replacer)
+    return elem
 
 
 def action(elem: Element, doc: Doc | None = None) -> Element | None:
@@ -78,7 +80,7 @@ def action(elem: Element, doc: Doc | None = None) -> Element | None:
             return replace_math(child, config=config)
 
     # replace eq_refs in all elements
-    elem.walk(replace_eq_refs(config))
+    replace_eq_refs(elem, config)
 
 
 def main(doc=None, input_stream=None, output_stream=None):

@@ -9,7 +9,6 @@ from typing import Type
 from panflute import convert_text, Doc, Element, load
 
 from displaymath2equation.main import main
-from displaymath2equation.types_ import Walker
 
 
 def show(caller_location: str = "", die: bool = False):
@@ -27,28 +26,31 @@ def show(caller_location: str = "", die: bool = False):
         sys.exit(0)
 
 
-def report_occurences(klass: Type, counter: dict[Type, list]) -> Walker:
+def find_occurences(elem: Doc | Element, klass: Type) -> list:
     """
-    Generate a reporter function to walk the document and capture elements of type ``klass``.
-    The passed counter will hold a list of elements afterwards.
+    Find all child elements of a certain type in a document.
+    Will return a list of those elements afterwards.
 
-    :param klass: A klass of which to count occurrences.
-    :param counter: A dict that acts as a counter/memory.
+    :param klass: A class of which to count occurrences.
+    :param elem: An element (or doc) to search for childelements of type ``klass``.
+    :return: The list of child elements of type ``klass``.
     """
-    def reporter(elem: Element, doc: Doc | None = None) -> None:
+    occurences = []
+
+    def reporter(elem: Doc | Element, doc: Doc | None = None) -> None:
         """
-        Reporter function to walk the document tree.
+        Reporter function to walk the document tree and capture elements of type ``klass``.
 
         :param elem: An element in the document stream.
         :param doc: Possibly the document.
         """
 
         if isinstance(elem, klass):
-            if klass not in counter:
-                counter[klass] = []
-            counter[klass].append(elem)
+            occurences.append(elem)
 
-    return reporter
+    elem.walk(reporter)
+    return occurences
+
 
 def process_file(path: Path) -> Doc:
     """

@@ -68,7 +68,7 @@ load-plugins = 'pylint.extensions.docstyle,pylint.extensions.mccabe'
 disable = [
     'raw-checker-failed', 'bad-inline-option', 'locally-disabled', 'file-ignored', 'suppressed-message',
     'useless-suppression', 'deprecated-pragma', 'use-symbolic-message-instead', 'docstring-first-line-empty',
-    'unspecified-encoding', 'redefined-outer-name'
+    'unspecified-encoding', 'redefined-outer-name', 'redefined-builtin'
 ]
 init-hook = '''
 import sys

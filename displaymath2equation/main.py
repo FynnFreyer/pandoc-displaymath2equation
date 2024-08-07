@@ -77,9 +77,8 @@ def action(elem: Element, doc: Doc | None = None) -> Element | None:
         if isinstance(child, Math):
             return replace_math(child, config=config)
 
-    # replace eq_refs in paragraphs
-    if isinstance(elem, Para):
-        elem.walk(replace_eq_refs(config))
+    # replace eq_refs in all elements
+    elem.walk(replace_eq_refs(config))
 
 
 def main(doc=None, input_stream=None, output_stream=None):

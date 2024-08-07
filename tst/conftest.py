@@ -11,5 +11,5 @@ def tst_dir() -> Path:
     return Path(__file__).parent
 
 @fixture(scope="session")
-def doc_test_md(tst_dir) -> Doc:
-    return process_file(tst_dir / "assets/test.md")
+def labeled_doc(tst_dir) -> Doc:
+    return process_file(tst_dir / "assets/labeled.md")

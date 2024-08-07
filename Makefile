@@ -24,9 +24,25 @@ lint: logs
 	date -Ih >> logs/mypy.log
 	python3 -m pylint displaymath2equation/ tst/ 2>&1 | tee -a logs/pylint.log
 
+PANDOC := pandoc -d tst/assets/defaults.yaml
+MD     := tst/assets/markdown
+OUT    := out
+PANLOG := logs/pandoc
+
+RENDER = $(PANDOC) $(MD)/$@.md -o $(OUT)/$@.pdf --log $(PANLOG)/$@.log
+
+.PHONY: pdf_dirs labeled refs_in_lists eqs_in_lists
+pdf_dirs:
+	mkdir -p $(OUT)
+	mkdir -p $(PANLOG)
+
+.PHONY: labeled refs_in_lists eqs_in_lists
+labeled:
+	$(RENDER)
+refs_in_lists:
+	$(RENDER)
+eqs_in_lists:
+	$(RENDER)
+
 .PHONY: pdfs
-pdfs:
-	mkdir -p "pdfs"
-	pandoc --filter displaymath2equation tst/assets/labeled.md -o labeled.pdf
-	pandoc --filter displaymath2equation tst/assets/refs_in_lists.md -o refs_in_lists.pdf
-	pandoc --filter displaymath2equation tst/assets/eqs_in_lists.md -o eqs_in_lists.pdf
+pdfs: logs pdf_dirs labeled refs_in_lists eqs_in_lists

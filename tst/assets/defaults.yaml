@@ -1,0 +1,7 @@
+verbosity: INFO
+fail-if-warnings: true
+log-file: ${.}/../../../logs/pandoc.log
+
+
+filters:
+  - pandoc-displaymath2equation

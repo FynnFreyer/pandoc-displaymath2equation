@@ -10,17 +10,21 @@ from util import process_file
 def tst_dir() -> Path:
     return Path(__file__).parent
 
-
 @fixture(scope="session")
-def labeled_doc(tst_dir) -> Doc:
-    return process_file(tst_dir / "assets/labeled.md")
-
-
-@fixture(scope="session")
-def reflist_doc(tst_dir) -> Doc:
-    return process_file(tst_dir / "assets/refs_in_lists.md")
+def md_dir(tst_dir) -> Path:
+    return tst_dir / "assets/markdown"
 
 
 @fixture(scope="session")
-def eqlist_doc(tst_dir) -> Doc:
-    return process_file(tst_dir / "assets/eqs_in_lists.md")
+def labeled_doc(md_dir) -> Doc:
+    return process_file(md_dir / "labeled.md")
+
+
+@fixture(scope="session")
+def reflist_doc(md_dir) -> Doc:
+    return process_file(md_dir / "refs_in_lists.md")
+
+
+@fixture(scope="session")
+def eqlist_doc(md_dir) -> Doc:
+    return process_file(md_dir / "eqs_in_lists.md")

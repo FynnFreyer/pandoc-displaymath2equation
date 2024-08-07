@@ -1,6 +1,6 @@
 from panflute import RawBlock, RawInline
 
-from config import Config
+from displaymath2equation.config import Config
 from util import report_occurences
 
 
